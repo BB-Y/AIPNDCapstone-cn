@@ -13155,7 +13155,9 @@ div#notebook {
 <h3 id="2.&#38382;&#39064;&#38472;&#36848;">2.&#38382;&#39064;&#38472;&#36848;<a class="anchor-link" href="#2.&#38382;&#39064;&#38472;&#36848;">&#182;</a></h3><p>可以了解到，收盘价、最低价、最高价、成交量等特征都是当前交易日结束后的统计值，我们需要预测的是下个交易日假设当日收盘时我们以收盘价买入，下一交易日以收盘价卖出，二者的差值即获得的收益，收益/成本为收益率。
 分析数据集特征，将数据集拆分为训练集和测试集，使用sklearn拟合线性回归模型，调整参数并解释结果，最后使用交叉验证评估模型。
 使用模型预测结果，当收益率大于零时买入。</p>
-<h3 id="3.&#35780;&#20215;&#25351;&#26631;">3.&#35780;&#20215;&#25351;&#26631;<a class="anchor-link" href="#3.&#35780;&#20215;&#25351;&#26631;">&#182;</a></h3><p>R2score指标可以衡量自变量对因变量的解释程度，R2score的值为0-1之间，越接近1表明拟合度越高。通过在训练集上拟合模型，在测试集上计算模型的R2score评价模型。</p>
+<h3 id="3.&#35780;&#20215;&#25351;&#26631;">3.&#35780;&#20215;&#25351;&#26631;<a class="anchor-link" href="#3.&#35780;&#20215;&#25351;&#26631;">&#182;</a></h3><p>这里选择R2score作为评价指标。
+R2score指标是计算目标变量的预测值和实际值之间的相关程度平方的百分比，数值范围从0至1，计算方法是用1 - 模型均方差/最简单模型均方差（预测值直接取均值）。R2越接近1，则模型均方差越接近0，意味着可以从自变量预测因变量。R2越接近0，模型均方差越接近最简单模型均方差，意味着不需要预测，直接用最简单模型即可。模型也可能出现负值的 𝑅2，这种情况下模型所做预测有时会比直接计算目标变量的平均值差很多。
+以上，我们可以通过计算 R2score 来判断模型的拟合程度，在训练集上拟合模型，在测试集上计算模型的R2score评价模型。</p>
 
 </div>
 </div>
@@ -13171,7 +13173,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[277]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#导入需要的库</span>
@@ -13206,7 +13208,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[277]:</div>
+    <div class="prompt output_prompt">Out[2]:</div>
 
 
 
@@ -13302,7 +13304,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[278]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#观察到tradeDate列为日期，可以使用日期作为索引</span>
@@ -13321,7 +13323,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[278]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
@@ -13420,7 +13422,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[279]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#数值特征</span>
@@ -13462,7 +13464,7 @@ memory usage: 119.6 KB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[280]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#统计信息</span>
@@ -13479,7 +13481,7 @@ memory usage: 119.6 KB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[280]:</div>
+    <div class="prompt output_prompt">Out[5]:</div>
 
 
 
@@ -13596,7 +13598,7 @@ memory usage: 119.6 KB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[281]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span>
@@ -13631,7 +13633,7 @@ memory usage: 119.6 KB
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[282]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
@@ -13647,7 +13649,7 @@ memory usage: 119.6 KB
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[282]:</div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -13754,7 +13756,10 @@ turnoverVol特征最大值与75%分位值差距较大，约为8倍，可能存�
 CHG 为绝对的涨跌点数，CHGPct 为 CHG 与closeIndex的除数，应舍弃 CHG 特征列。
 CHGPct最小值与25%分位值相差约11倍，最大值与75%分位值相差约9倍，可能存在异常值。</p>
 <h3 id="2.&#25506;&#32034;&#24615;&#21487;&#35270;&#21270;">2.&#25506;&#32034;&#24615;&#21487;&#35270;&#21270;<a class="anchor-link" href="#2.&#25506;&#32034;&#24615;&#21487;&#35270;&#21270;">&#182;</a></h3><p>通过可视化看到，CHG与CHGPct呈正态分布，turnoverVol呈右偏态,turnoverVol的分布图可以明显看出右侧有离群值</p>
-<h3 id="3.&#31639;&#27861;&#21644;&#25216;&#26415;">3.&#31639;&#27861;&#21644;&#25216;&#26415;<a class="anchor-link" href="#3.&#31639;&#27861;&#21644;&#25216;&#26415;">&#182;</a></h3><p>根据观察到的特点，线性回归需要用 log 函数将数据从偏态分布转换为正态分布，并进行标准化。</p>
+<h3 id="3.&#31639;&#27861;&#21644;&#25216;&#26415;">3.&#31639;&#27861;&#21644;&#25216;&#26415;<a class="anchor-link" href="#3.&#31639;&#27861;&#21644;&#25216;&#26415;">&#182;</a></h3><p>线性回归是一种通过特征的线性组合来进行预测的线性模型，模型的结果是找到拟合最佳的回归线来预测 y 值，
+要找出最佳回归线，我们用的主要算法叫做最小二乘法，使用该算法，我们可找出一条最小化误差函数的回归线。
+线性回归可以分析两种或两种以上变量间相互依赖的定量关系，我们的数据集中因变量为数值型，所以适合使用线性回归。
+根据观察到的特点，线性回归需要用 log 函数将数据从偏态分布转换为正态分布，并进行标准化。</p>
 
 </div>
 </div>
